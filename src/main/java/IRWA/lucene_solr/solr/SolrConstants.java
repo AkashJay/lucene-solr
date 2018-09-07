@@ -10,7 +10,7 @@ public class SolrConstants {
 	
 	public static final String pub_location = "pub_location";
 	
-	public static final String  pub_latlng = "pub_latlng";
+	public static final String  pub_location_latlng = "pub_latlng";
 	
 	public static final String author_firstname = "author_firstname";
 	
