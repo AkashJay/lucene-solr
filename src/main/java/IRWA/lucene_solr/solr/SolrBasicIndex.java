@@ -9,6 +9,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
@@ -44,6 +45,23 @@ public class SolrBasicIndex {
 		//But we can use a BEAN to retrieve all the values at once
 		//So we have to create a bean for that
 		printAsDocumentsAsABean(documentList);
+		
+		
+		//Now we will try to delete a document for the given query
+		executeDelete(query);
+	}
+
+	private static void executeDelete(SolrQuery query) throws SolrServerException, IOException {
+		
+		//To check the no of document get affected we will initially set it to 0
+		query.setRows(0);
+		QueryResponse response = client.query(query);
+		System.out.println("No of rows will get removed : "+response.getResults().getNumFound());
+		
+		UpdateResponse deleteByQuery = client.deleteByQuery(query.getQuery());
+		System.out.println("Time taken : "+ deleteByQuery.getElapsedTime());
+		client.commit();
+		
 	}
 
 	private static void printAsDocumentsAsABean(SolrDocumentList documentList) {
