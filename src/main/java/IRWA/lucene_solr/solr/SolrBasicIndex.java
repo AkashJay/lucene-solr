@@ -39,6 +39,15 @@ public class SolrBasicIndex {
 		//Then execute the query and get the Document list that match the query
 		SolrDocumentList documentList = executeQuery(query);
 		
+		//*************Updating the document returened for the query********************
+		//Now let's see how update work
+				//  1 query the result
+				//  2 Update it's title and again execute the query
+			updateAsBean(documentList,"9780072231892","updated Title");
+		
+			documentList = executeQuery(query);
+		//********** /Updating *************
+				
 		//At last print the returned documents
 		printAsDocuments(documentList);
 		//In here we have to print the value of the object seperatly
@@ -48,7 +57,27 @@ public class SolrBasicIndex {
 		
 		
 		//Now we will try to delete a document for the given query
-		executeDelete(query);
+		//executeDelete(query);
+		
+		
+	}
+
+	private static void updateAsBean(SolrDocumentList documentList, String isbn, String string2) throws SolrServerException, IOException {
+		
+		for (SolrDocument doc : documentList) {
+			//First get the bean for each document returned for the query
+			DocumentObjectBinder bind = new DocumentObjectBinder();
+			Bean bean = bind.getBean(Bean.class, doc);
+			
+			if(bean.getIsbn().equals(isbn)) {
+				bean.setTitle(string2);
+				//Add the updated document to solr
+				client.addBean(bean);
+				client.commit();
+				break;
+			}
+			
+		}
 	}
 
 	private static void executeDelete(SolrQuery query) throws SolrServerException, IOException {
