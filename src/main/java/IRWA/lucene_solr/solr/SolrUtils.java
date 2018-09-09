@@ -62,8 +62,8 @@ public class SolrUtils {
 		
 		//Location lating
 		Map<String, String> lating = new HashMap<String, String>();
-		lating.put(SOLR_OPERATION_SET, bookJSON.getAsString(SolrConstants.pub_location_latlng));
-		solrDocument.addField(SolrConstants.pub_location_latlng, lating);
+		lating.put(SOLR_OPERATION_SET, bookJSON.getAsString(SolrConstants.pub_latlng));
+		solrDocument.addField(SolrConstants.pub_latlng, lating);
 		
 		
 		return solrDocument;

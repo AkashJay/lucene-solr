@@ -5,8 +5,8 @@ import java.io.IOException;
 
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrResponse;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
@@ -24,7 +24,7 @@ public class SolrBasicIndex {
 	
 	public static void main(String[] args) throws SolrServerException, IOException {
 		
-		//Access the bookstore core using solr clien object created above
+		//Access the bookstore core using solr client object created above
 		client = new HttpSolrClient("http://localhost:8983/solr/bookstore");
 		System.out.println("Solr client created "+ ((HttpSolrClient) client).getBaseURL());
 		
@@ -40,6 +40,21 @@ public class SolrBasicIndex {
 		
 		//At last print the returned documents
 		printAsDocuments(documentList);
+		//In here we have to print the value of the object seperatly
+		//But we can use a BEAN to retrieve all the values at once
+		//So we have to create a bean for that
+		printAsDocumentsAsABean(documentList);
+	}
+
+	private static void printAsDocumentsAsABean(SolrDocumentList documentList) {
+		
+		
+		for (SolrDocument doc : documentList) {
+			DocumentObjectBinder bind = new DocumentObjectBinder();
+			Bean bean = bind.getBean(Bean.class, doc);
+			System.out.println(bean);
+		}
+		
 	}
 
 	private static void printAsDocuments(SolrDocumentList documentList) {
