@@ -18,7 +18,7 @@ import org.apache.solr.common.params.CommonParams;
 public class SolrBasicIndex {
 	
 	//Diretory file path to read json files
-	public static File solrJsonDirectory = new File("E:\\Projects\\Solr\\solr-6.0.0\\solr-bookstore-json-files");
+	public static File solrJsonDirectory = new File("/home/akash/Documents/3rd Year 2nd Semester/IRWA/Project_Solr/Apache_Solr/solr-6.0.0/solr-bookstore-json-files");
 	
 	//Create a solr client object to connect to solr in local
 	private static SolrClient client = null;
@@ -26,8 +26,13 @@ public class SolrBasicIndex {
 	public static void main(String[] args) throws SolrServerException, IOException {
 		
 		//Access the bookstore core using solr client object created above
-		client = new HttpSolrClient("http://localhost:8983/solr/bookstore");
-		System.out.println("Solr client created "+ ((HttpSolrClient) client).getBaseURL());
+		      //client = new HttpSolrClient.Builder("http://localhost:8983/solr/bookstore").build();
+		
+		//client = new HttpSolrClient("http://localhost:8983/solr/bookstore");
+		      //System.out.println("Solr client created "+ ((HttpSolrClient) client).getBaseURL());
+		
+		//*********** Now we acess the solr client object through a dedicated singelton instance
+		client = ApacheSolrClient.getInstance().getClient();
 		
 		//Index the documents
 		index();
